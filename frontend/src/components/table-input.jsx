@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
-import { Input, styled } from '@mui/joy';
-import { useSubmit } from 'react-router-dom';
+import { Input, styled, AspectRatio, Skeleton } from '@mui/joy';
+import { useSubmit, useNavigation } from 'react-router-dom';
 
 const TableStyledInput = styled(Input)({
   border: 'none',
+  borderRadius: 0,
   paddingLeft: 0,
   '& input': {
     cursor: 'pointer',
@@ -15,9 +16,10 @@ const TableStyledInput = styled(Input)({
 
 const TableInput = ({ value, ...rest }) => {
   const submit = useSubmit();
+  const navigation = useNavigation();
 
   return (
-    <>
+    <AspectRatio maxHeight={40}>
       <TableStyledInput
         {...rest}
         defaultValue={value}
@@ -33,7 +35,14 @@ const TableInput = ({ value, ...rest }) => {
           });
         }}
       />
-    </>
+      <Skeleton
+        maxHeight={40}
+        loading={
+          parseInt(navigation.formAction?.match(/\d+/gi)) == rest.id &&
+          navigation.formData.has(rest.name)
+        }
+      />
+    </AspectRatio>
   );
 };
 
