@@ -28,8 +28,14 @@ const router = createBrowserRouter([
         path: 'students',
         element: <Students />,
         loader: async () => {
-          const { data } = await axios.get('/api/students?populate=*');
+          const { data } = await axios.get(
+            '/api/students?populate=*&sort=createdAt:desc'
+          );
           return data.data;
+        },
+        action: async () => {
+          await axios.post('/api/students', { data: {} });
+          return null;
         },
       },
     ],

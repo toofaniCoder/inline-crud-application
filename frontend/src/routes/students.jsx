@@ -1,5 +1,5 @@
-import { Box, Button, Sheet, Table } from '@mui/joy';
-import { useLoaderData } from 'react-router-dom';
+import { Box, Button, Sheet, Stack, Table } from '@mui/joy';
+import { useLoaderData, Form } from 'react-router-dom';
 import axios from 'axios';
 import CustomAvatar from '../components/custom-avatar';
 import TableInput from '../components/table-input';
@@ -14,33 +14,47 @@ import {
 const columnHelper = createColumnHelper();
 
 const columns = [
-  columnHelper.accessor((row) => row.attributes.profile.data.attributes.url, {
-    id: 'profile',
-    header: 'Profile Picture',
-    size: 80,
-    cell: ({ getValue }) => (
-      <CustomAvatar src={`${axios.defaults.baseURL}${getValue()}`} />
-    ),
-  }),
+  columnHelper.accessor(
+    (row) => row.attributes.profile?.data?.attributes?.url,
+    {
+      id: 'profile',
+      header: 'Profile Picture',
+      size: 80,
+      cell: ({ getValue }) => (
+        <CustomAvatar
+          key={getValue()}
+          src={`${axios.defaults.baseURL}${getValue()}`}
+        />
+      ),
+    }
+  ),
   columnHelper.accessor((row) => row.attributes.fname, {
     id: 'fname',
     header: 'First Name',
-    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
+    cell: ({ getValue }) => (
+      <TableInput key={getValue()} defaultValue={getValue()} />
+    ),
   }),
   columnHelper.accessor((row) => row.attributes.lname, {
     id: 'lname',
     header: 'Last Name',
-    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
+    cell: ({ getValue }) => (
+      <TableInput key={getValue()} defaultValue={getValue()} />
+    ),
   }),
   columnHelper.accessor((row) => row.attributes.email, {
     id: 'email',
     header: 'E-mail Address',
-    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
+    cell: ({ getValue }) => (
+      <TableInput key={getValue()} defaultValue={getValue()} />
+    ),
   }),
   columnHelper.accessor((row) => row.attributes.phone, {
     id: 'phone',
     header: 'Phone Number',
-    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
+    cell: ({ getValue }) => (
+      <TableInput key={getValue()} defaultValue={getValue()} />
+    ),
   }),
   columnHelper.accessor((row) => row.id, {
     id: 'id',
@@ -59,7 +73,12 @@ const Students = () => {
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <Box sx={{ p: 4 }}>
+    <Box component={Stack} spacing={2} sx={{ p: 4 }}>
+      <Form method="post">
+        <Button type="submit" color="warning">
+          Create New Student
+        </Button>
+      </Form>
       <Sheet sx={{ borderRadius: 10 }}>
         <Table borderAxis="both" size="lg">
           <thead>
