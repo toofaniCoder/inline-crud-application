@@ -51,7 +51,7 @@ const Home = () => {
           context, often seen in web applications for efficient data management
           and real-time interactions.
         </HeroSubText>
-        <HeroButton component={Link} to="users">
+        <HeroButton component={Link} to="students">
           go to dashboard
         </HeroButton>
       </Grid>

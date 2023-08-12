@@ -2,6 +2,10 @@ import ReactDOM from 'react-dom/client';
 import { CssVarsProvider, CssBaseline, GlobalStyles } from '@mui/joy';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+// axios setup
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:1337';
+
 // import pages
 import Layout from './routes/layout';
 import Home from './routes/home';
@@ -21,8 +25,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: 'users',
+        path: 'students',
         element: <Students />,
+        loader: async () => {
+          const { data } = await axios.get('/api/students?populate=*');
+          return data.data;
+        },
       },
     ],
   },
