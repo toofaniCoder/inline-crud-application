@@ -1,6 +1,8 @@
-import { Avatar, Box, Button, Sheet, Table } from '@mui/joy';
+import { Box, Button, Sheet, Table } from '@mui/joy';
 import { useLoaderData } from 'react-router-dom';
 import axios from 'axios';
+import CustomAvatar from '../components/custom-avatar';
+import TableInput from '../components/table-input';
 
 import {
   createColumnHelper,
@@ -16,24 +18,28 @@ const columns = [
     id: 'profile',
     header: 'Profile Picture',
     cell: ({ getValue }) => (
-      <Avatar src={`${axios.defaults.baseURL}${getValue()}`} />
+      <CustomAvatar src={`${axios.defaults.baseURL}${getValue()}`} />
     ),
   }),
   columnHelper.accessor((row) => row.attributes.fname, {
     id: 'fname',
     header: 'First Name',
+    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
   }),
   columnHelper.accessor((row) => row.attributes.lname, {
     id: 'lname',
     header: 'Last Name',
+    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
   }),
   columnHelper.accessor((row) => row.attributes.email, {
     id: 'email',
     header: 'E-mail Address',
+    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
   }),
   columnHelper.accessor((row) => row.attributes.phone, {
     id: 'phone',
     header: 'Phone Number',
+    cell: ({ getValue }) => <TableInput defaultValue={getValue()} />,
   }),
   columnHelper.accessor((row) => row.id, {
     id: 'id',
