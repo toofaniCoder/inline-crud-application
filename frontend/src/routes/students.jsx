@@ -17,6 +17,7 @@ const columns = [
   columnHelper.accessor((row) => row.attributes.profile.data.attributes.url, {
     id: 'profile',
     header: 'Profile Picture',
+    size: 80,
     cell: ({ getValue }) => (
       <CustomAvatar src={`${axios.defaults.baseURL}${getValue()}`} />
     ),
@@ -44,6 +45,7 @@ const columns = [
   columnHelper.accessor((row) => row.id, {
     id: 'id',
     header: 'Action',
+    size: 80,
     cell: () => <Button color="danger">delete</Button>,
   }),
 ];
@@ -61,14 +63,21 @@ const Students = () => {
       <Sheet sx={{ borderRadius: 10 }}>
         <Table borderAxis="both" size="lg">
           <thead>
-            <tr>
-              <th style={{ width: '10%' }}>Profile</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>E-mail Address</th>
-              <th>Phone Number</th>
-              <th style={{ width: '10%' }}>Action</th>
-            </tr>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  console.log(header);
+                  return (
+                    <th style={{ width: header.getSize() }} key={header.id}>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
