@@ -1,5 +1,5 @@
 import { Box, Button, Sheet, Stack, Table } from '@mui/joy';
-import { useLoaderData, Form } from 'react-router-dom';
+import { useLoaderData, Form, useRevalidator } from 'react-router-dom';
 import axios from 'axios';
 import CustomAvatar from '../components/custom-avatar';
 import TableInput from '../components/table-input';
@@ -66,6 +66,7 @@ const columns = [
 
 const Students = () => {
   const data = useLoaderData();
+  const revalidator = useRevalidator();
   console.log(data);
   const table = useReactTable({
     data,
@@ -75,9 +76,34 @@ const Students = () => {
   return (
     <Box component={Stack} spacing={2} sx={{ p: 4 }}>
       <Form method="post">
-        <Button type="submit" color="warning">
-          Create New Student
-        </Button>
+        <Stack direction={'row'} spacing={1}>
+          <Button type="submit" color="warning">
+            Create New Student
+          </Button>
+          <Button
+            variant="soft"
+            onClick={async () => {
+              let promises = data
+                .filter((entry) => {
+                  const attributes = entry.attributes;
+                  return (
+                    attributes.fname === null &&
+                    attributes.lname === null &&
+                    attributes.email === null &&
+                    attributes.phone === null
+                  );
+                })
+                .map((entry) => entry.id);
+              promises = promises.map((id) =>
+                axios.delete(`/api/students/${id}`)
+              );
+              await Promise.all(promises);
+              revalidator.revalidate();
+            }}
+          >
+            Clear All Empty Entries
+          </Button>
+        </Stack>
       </Form>
       <Sheet sx={{ borderRadius: 10 }}>
         <Table borderAxis="both" size="lg">
