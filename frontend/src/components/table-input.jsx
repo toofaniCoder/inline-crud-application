@@ -38,6 +38,7 @@ const TableInput = ({ value, ...rest }) => {
       <Skeleton
         maxHeight={40}
         loading={
+          navigation.state === 'submitting' &&
           parseInt(navigation.formAction?.match(/\d+/gi)) == rest.id &&
           navigation.formData.has(rest.name)
         }

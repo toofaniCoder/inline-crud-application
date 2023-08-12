@@ -21,6 +21,7 @@ const CustomAvatar = (props) => {
       >
         <Skeleton
           loading={
+            navigation.state === 'submitting' &&
             parseInt(navigation.formAction?.match(/\d+/gi)) == id &&
             navigation.formData.has(name)
           }
