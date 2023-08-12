@@ -41,29 +41,49 @@ const Students = () => {
     columnHelper.accessor((row) => row.attributes.fname, {
       id: 'fname',
       header: 'First Name',
-      cell: ({ getValue }) => (
-        <TableInput key={getValue()} defaultValue={getValue()} />
+      cell: ({ row, column, getValue }) => (
+        <TableInput
+          key={getValue()}
+          id={row.original.id}
+          name={column.id}
+          value={getValue()}
+        />
       ),
     }),
     columnHelper.accessor((row) => row.attributes.lname, {
       id: 'lname',
       header: 'Last Name',
-      cell: ({ getValue }) => (
-        <TableInput key={getValue()} defaultValue={getValue()} />
+      cell: ({ row, column, getValue }) => (
+        <TableInput
+          key={getValue()}
+          id={row.original.id}
+          name={column.id}
+          value={getValue()}
+        />
       ),
     }),
     columnHelper.accessor((row) => row.attributes.email, {
       id: 'email',
       header: 'E-mail Address',
-      cell: ({ getValue }) => (
-        <TableInput key={getValue()} defaultValue={getValue()} />
+      cell: ({ row, column, getValue }) => (
+        <TableInput
+          key={getValue()}
+          id={row.original.id}
+          name={column.id}
+          value={getValue()}
+        />
       ),
     }),
     columnHelper.accessor((row) => row.attributes.phone, {
       id: 'phone',
       header: 'Phone Number',
-      cell: ({ getValue }) => (
-        <TableInput key={getValue()} defaultValue={getValue()} />
+      cell: ({ row, column, getValue }) => (
+        <TableInput
+          key={getValue()}
+          id={row.original.id}
+          name={column.id}
+          value={getValue()}
+        />
       ),
     }),
     columnHelper.accessor((row) => row.id, {

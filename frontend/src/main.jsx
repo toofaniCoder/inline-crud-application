@@ -1,6 +1,10 @@
 import ReactDOM from 'react-dom/client';
 import { CssVarsProvider, CssBaseline, GlobalStyles } from '@mui/joy';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  redirect,
+} from 'react-router-dom';
 
 // axios setup
 import axios from 'axios';
@@ -43,6 +47,23 @@ const router = createBrowserRouter([
         action: async ({ params }) => {
           await axios.delete(`/api/students/${params.id}`);
           return null;
+        },
+      },
+      {
+        path: 'students/:id/edit',
+        action: async ({ request, params }) => {
+          let formData = await request.formData();
+          console.log(Object.fromEntries(formData));
+          // data = all text form data
+          // ...rest is file
+          const { profile, ...rest } = Object.fromEntries(formData);
+          const textFormData = new FormData();
+          textFormData.append('data', JSON.stringify(rest));
+
+          textFormData.append('files.profile', profile);
+
+          await axios.put(`/api/students/${params.id}`, textFormData);
+          return redirect('/students');
         },
       },
     ],
