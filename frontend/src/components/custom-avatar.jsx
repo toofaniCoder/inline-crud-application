@@ -1,17 +1,32 @@
 /* eslint-disable react/prop-types */
-import { Avatar } from '@mui/joy';
-import { useSubmit } from 'react-router-dom';
+import { Avatar, Skeleton } from '@mui/joy';
+import { useSubmit, useNavigation } from 'react-router-dom';
 
 const CustomAvatar = (props) => {
+  const navigation = useNavigation();
   const submit = useSubmit();
+  const { src, id, name } = { ...props };
   return (
     <>
       <Avatar
         sx={{ cursor: 'pointer' }}
+        src={
+          parseInt(navigation.formAction?.match(/\d+/gi)) == id &&
+          navigation.formData.has(name)
+            ? ''
+            : src
+        }
         htmlFor="profile"
         component="label"
-        {...props}
-      />
+      >
+        <Skeleton
+          loading={
+            parseInt(navigation.formAction?.match(/\d+/gi)) == id &&
+            navigation.formData.has(name)
+          }
+          sx={{ maxWidth: '100%', maxHeight: '100%' }}
+        />
+      </Avatar>
       <input
         type="file"
         name="profile"
@@ -23,7 +38,7 @@ const CustomAvatar = (props) => {
             formData.append(e.target.name, e.target.files[0]);
             submit(formData, {
               method: 'post',
-              action: `${props.id}/edit`,
+              action: `${id}/edit`,
               encType: 'multipart/form-data',
             });
           }

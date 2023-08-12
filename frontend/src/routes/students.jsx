@@ -21,10 +21,11 @@ const columns = [
       id: 'profile',
       header: 'Profile Picture',
       size: 80,
-      cell: ({ row, getValue }) => (
+      cell: ({ row, column, getValue }) => (
         <CustomAvatar
           id={row.original.id}
           key={getValue()}
+          name={column.id}
           src={`${axios.defaults.baseURL}${getValue()}`}
         />
       ),
