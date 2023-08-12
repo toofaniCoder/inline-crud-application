@@ -38,6 +38,13 @@ const router = createBrowserRouter([
           return null;
         },
       },
+      {
+        path: 'students/:id/delete',
+        action: async ({ params }) => {
+          await axios.delete(`/api/students/${params.id}`);
+          return null;
+        },
+      },
     ],
   },
 ]);
