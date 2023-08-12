@@ -1,10 +1,5 @@
 import { Box, Button, Sheet, Stack, Table } from '@mui/joy';
-import {
-  useLoaderData,
-  Form,
-  useRevalidator,
-  useFetcher,
-} from 'react-router-dom';
+import { useLoaderData, Form, useRevalidator } from 'react-router-dom';
 import axios from 'axios';
 import CustomAvatar from '../components/custom-avatar';
 import TableInput from '../components/table-input';
@@ -15,90 +10,86 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import DeleteCell from '../components/delete-cell';
 
 const columnHelper = createColumnHelper();
+
+const columns = [
+  columnHelper.accessor(
+    (row) => row.attributes.profile?.data?.attributes?.url,
+    {
+      id: 'profile',
+      header: 'Profile Picture',
+      size: 80,
+      cell: ({ getValue }) => (
+        <CustomAvatar
+          key={getValue()}
+          src={`${axios.defaults.baseURL}${getValue()}`}
+        />
+      ),
+    }
+  ),
+  columnHelper.accessor((row) => row.attributes.fname, {
+    id: 'fname',
+    header: 'First Name',
+    cell: ({ row, column, getValue }) => (
+      <TableInput
+        key={getValue()}
+        id={row.original.id}
+        name={column.id}
+        value={getValue()}
+      />
+    ),
+  }),
+  columnHelper.accessor((row) => row.attributes.lname, {
+    id: 'lname',
+    header: 'Last Name',
+    cell: ({ row, column, getValue }) => (
+      <TableInput
+        key={getValue()}
+        id={row.original.id}
+        name={column.id}
+        value={getValue()}
+      />
+    ),
+  }),
+  columnHelper.accessor((row) => row.attributes.email, {
+    id: 'email',
+    header: 'E-mail Address',
+    cell: ({ row, column, getValue }) => (
+      <TableInput
+        key={getValue()}
+        id={row.original.id}
+        name={column.id}
+        value={getValue()}
+      />
+    ),
+  }),
+  columnHelper.accessor((row) => row.attributes.phone, {
+    id: 'phone',
+    header: 'Phone Number',
+    cell: ({ row, column, getValue }) => (
+      <TableInput
+        key={getValue()}
+        id={row.original.id}
+        name={column.id}
+        value={getValue()}
+      />
+    ),
+  }),
+  columnHelper.accessor((row) => row.id, {
+    id: 'id',
+    header: 'Action',
+    size: 80,
+    cell: (props) => <DeleteCell {...props} />,
+  }),
+];
 
 const Students = () => {
   const data = useLoaderData();
   const revalidator = useRevalidator();
-  const fetcher = useFetcher();
   console.log(data);
-  const columns = [
-    columnHelper.accessor(
-      (row) => row.attributes.profile?.data?.attributes?.url,
-      {
-        id: 'profile',
-        header: 'Profile Picture',
-        size: 80,
-        cell: ({ getValue }) => (
-          <CustomAvatar
-            key={getValue()}
-            src={`${axios.defaults.baseURL}${getValue()}`}
-          />
-        ),
-      }
-    ),
-    columnHelper.accessor((row) => row.attributes.fname, {
-      id: 'fname',
-      header: 'First Name',
-      cell: ({ row, column, getValue }) => (
-        <TableInput
-          key={getValue()}
-          id={row.original.id}
-          name={column.id}
-          value={getValue()}
-        />
-      ),
-    }),
-    columnHelper.accessor((row) => row.attributes.lname, {
-      id: 'lname',
-      header: 'Last Name',
-      cell: ({ row, column, getValue }) => (
-        <TableInput
-          key={getValue()}
-          id={row.original.id}
-          name={column.id}
-          value={getValue()}
-        />
-      ),
-    }),
-    columnHelper.accessor((row) => row.attributes.email, {
-      id: 'email',
-      header: 'E-mail Address',
-      cell: ({ row, column, getValue }) => (
-        <TableInput
-          key={getValue()}
-          id={row.original.id}
-          name={column.id}
-          value={getValue()}
-        />
-      ),
-    }),
-    columnHelper.accessor((row) => row.attributes.phone, {
-      id: 'phone',
-      header: 'Phone Number',
-      cell: ({ row, column, getValue }) => (
-        <TableInput
-          key={getValue()}
-          id={row.original.id}
-          name={column.id}
-          value={getValue()}
-        />
-      ),
-    }),
-    columnHelper.accessor((row) => row.id, {
-      id: 'id',
-      header: 'Action',
-      size: 80,
-      cell: ({ getValue }) => (
-        <fetcher.Form method="post" action={`${getValue()}/delete`}>
-          <Button type="submit" color="danger">
-            delete
-          </Button>
-        </fetcher.Form>
-      ),
-    }),
-  ];
+
   const table = useReactTable({
     data,
     columns,
