@@ -16,7 +16,8 @@ const CustomAvatar = (props) => {
             ? ''
             : src
         }
-        htmlFor="profile"
+      //  htmlFor="profile"
+        htmlFor={id}
         component="label"
       >
         <Skeleton
@@ -31,7 +32,8 @@ const CustomAvatar = (props) => {
       <input
         type="file"
         name="profile"
-        id="profile"
+      //  id="profile"
+      id={id}  
         hidden
         onChange={(e) => {
           if (e.target.files[0]) {
